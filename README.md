@@ -28,6 +28,18 @@
 3. **After recalibration, FedBN gives no advantage over FedAvg** (88.2% vs. 88.0%). Here, FedBN's benefit comes almost entirely from keeping local BN statistics.
 4. **Gray-world normalization mainly helps on unseen hospitals:** with recalibration, unseen-hospital accuracy rises from about 87% to 92.2% for both methods, consistently across seeds. On the training hospitals it adds little, and worst-hospital accuracy drops slightly (86.8% → 85.3%).
 
+## Fairness across hospitals
+Treating hospitals as groups, equity-scaled accuracy = mean / (1 + Σ|acc_hospital − mean|):
+
+| Method | ES-Acc | ES-Acc (recal) |
+|---|---|---|
+| FedAvg | 0.206 | 0.847 |
+| FedAvg + GW | 0.362 | 0.816 |
+| FedBN | 0.449 | 0.844 |
+| FedBN + GW | 0.707 | 0.821 |
+
+Without recalibration, gray-world greatly improves fairness across hospitals. After recalibration, it slightly raises mean accuracy but lowers fairness, because it helps easier hospitals while slightly hurting the hardest one.
+
 ## Limitations
 - Shifts are simulated; images are 28×28; small CNN; 2 seeds; one dataset.
 - For the unseen hospital, BN statistics are estimated on the same unlabeled images used for evaluation (standard test-time adaptation). A stricter test would calibrate and evaluate on separate halves.
